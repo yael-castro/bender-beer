@@ -19,7 +19,7 @@ func TestNewRedisClient(t *testing.T) {
 func TestNewSQLDB(t *testing.T) {
 	db, err := NewSQLDB()
 	if err != nil {
-		t.Fatal("failed sql connection", err)
+		t.Fatal("failed migrations connection", err)
 	}
 
 	db.Close()

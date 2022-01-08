@@ -43,6 +43,11 @@ func (p BeerProvider) GetBeerBox(beerId, beerNumber int, currency string) (box m
 		return
 	}
 
+	if beer.Currency == currency {
+		box.PriceTotal = beer.Price * float64(beerNumber)
+		return
+	}
+
 	value, err := p.ProvideCurrency(beer.Currency, currency)
 	if err != nil {
 		return

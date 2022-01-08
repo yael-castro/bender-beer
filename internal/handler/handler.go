@@ -30,15 +30,11 @@ func (h Handler) Init() {
 	h.Use(middleware.Recover(), middleware.Logger(), middleware.CORS())
 
 	// Endpoint settings
-	h.GET("/bender-beer/v1/health-check", HealthCheck)
+	h.GET("/bender-beer/v1/health-check/", HealthCheck)
 
-	beer := h.Group("/bender-beer/v1/beer/")
+	h.POST("/bender-beer/v1/beers/", h.CreateBeer)
 
-	beer.POST("", h.CreateBeer)
-	beer.GET(":beerId", h.GetBeerById)
-	beer.GET("boxprice/:beerId", h.GetBeerBox)
-
-	beers := h.Group("/bender-beer/v1/beers/")
-
-	beers.GET("", h.GetAllBeers)
+	h.GET("/bender-beer/v1/beers/:beerId/", h.GetBeerById)
+	h.GET("/bender-beer/v1/beers/:beerId/boxprice/", h.GetBeerBox)
+	h.GET("/bender-beer/v1/beers/", h.GetAllBeers)
 }

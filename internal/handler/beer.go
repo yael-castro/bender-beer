@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/yael-castro/bender-beer/internal/business"
 	"github.com/yael-castro/bender-beer/internal/model"
+	"log"
 	"mime"
 	"net/http"
 	"strconv"
@@ -100,6 +101,8 @@ func (b BeerGroup) GetBeerBox(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, model.Error{Info: "missing a numeric value for the path param"})
 	}
+
+	log.Println(id)
 
 	currency := c.QueryParam("currency")
 	if id == "" {
