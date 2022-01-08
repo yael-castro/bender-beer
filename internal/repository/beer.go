@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"sort"
+	"sync"
 
 	"github.com/yael-castro/bender-beer/internal/model"
 )
@@ -26,8 +27,11 @@ type BeerStorage interface {
 func NewBeerStorage(t Type) (BeerStorage, error) {
 	switch t {
 	case Memory:
+		cpy := beerData
+
 		return &memoryBeerStorage{
-			data: beerData,
+			data:    cpy,
+			counter: len(cpy),
 		}, nil
 
 	case SQL:
@@ -55,10 +59,13 @@ func NewBS(t Type) BeerStorage {
 type memoryBeerStorage struct {
 	data    map[int]model.Beer
 	counter int
+	sync.Mutex
 }
 
 // CreateBeer creates a beer in the memory storage (hash map)
 func (m *memoryBeerStorage) CreateBeer(beer *model.Beer) error {
+	m.Lock()
+	defer m.Unlock()
 	m.counter++
 
 	beer.Id = m.counter
@@ -75,6 +82,8 @@ func (m *memoryBeerStorage) CreateBeer(beer *model.Beer) error {
 //
 // Search complexity: O(1)
 func (m *memoryBeerStorage) GetBeerById(id int) (beer model.Beer, err error) {
+	m.Lock()
+	defer m.Unlock()
 	beer, ok := m.data[id]
 	if !ok {
 		err = model.NotFound(fmt.Sprintf(`not found beer with id '%d'`, id))
@@ -85,6 +94,8 @@ func (m *memoryBeerStorage) GetBeerById(id int) (beer model.Beer, err error) {
 
 // GetAllBeers parse the m.data (hash map) to model.Beers
 func (m memoryBeerStorage) GetAllBeers() (beers model.Beers, err error) {
+	m.Lock()
+	defer m.Unlock()
 	var keys []int
 
 	for k := range m.data {

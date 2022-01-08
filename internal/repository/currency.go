@@ -28,6 +28,13 @@ func NewCurrencyProvider(t Type) (CurrencyProvider, error) {
 		return &currencyRealTime{
 			URI: os.Getenv("CURRENCY_API_URL"),
 		}, nil
+	case Memory:
+		return &memoryCurrencyProvider{
+			data: map[string]float64{
+				"USDMXN": 20.38,
+				"MXNUSD": 0.049,
+			},
+		}, nil
 	}
 
 	return nil, fmt.Errorf(`type "%d" is not supported by NewCurrencyProvider`, t)
@@ -94,7 +101,23 @@ func (c currencyRealTime) ProvideCurrency(beerCurrency, paymentCurrency string) 
 
 	value, ok := info.Quotes[filter]
 	if !ok {
-		err = model.NotFound(fmt.Sprintf("not found a currency with the key '%s'", filter))
+		err = model.NotFound(fmt.Sprintf("not found currency with the key '%s'", filter))
+	}
+
+	return
+}
+
+type memoryCurrencyProvider struct {
+	data map[string]float64
+}
+
+func (m memoryCurrencyProvider) ProvideCurrency(beerCurrency string, paymentCurrency string) (value float64, err error) {
+	key := beerCurrency + paymentCurrency
+
+	value, ok := m.data[key]
+	if !ok {
+		err = model.NotFound(fmt.Sprintf(`not found currency with the key '%s'`, key))
+		return
 	}
 
 	return

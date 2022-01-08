@@ -28,6 +28,7 @@ var (
 				data: map[int]model.Beer{
 					1: model.Beer{},
 				},
+				counter: 1,
 			},
 			Beer: model.Beer{
 				Id:      1,

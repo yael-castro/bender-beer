@@ -56,8 +56,11 @@ func handlerDefault(i interface{}) error {
 
 	h.Beer = handler.BeerGroup{
 		BeerStorage: business.BeerProvider{
-			BeerStorage:      repository.NewBS(repository.SQL),
-			CurrencyProvider: repository.NewCP(repository.ThirdPartyAPI),
+			BeerStorage: repository.NewBS(repository.SQL),
+			CurrencyProvider: repository.CacheCurrencyProvider{
+				Client:           repository.NewRedis(),
+				CurrencyProvider: repository.NewCP(repository.ThirdPartyAPI),
+			},
 		},
 	}
 

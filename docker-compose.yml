@@ -3,14 +3,16 @@ version: '3.7'
 services:
 
   beer_storage:
-    # my image
-    image: yy00/bender-beer:1.0.0-alphine13
+    # my image #image: yy00/bender-beer:v0.1.0
+    image: postgres:13-alpine3.15
     restart: unless-stopped
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=tequila
       - POSTGRES_DB=beer
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/data_base_init.sql
 
   beer_cache:
     image: redis:6.0-alpine3.15

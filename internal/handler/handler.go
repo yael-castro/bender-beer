@@ -32,10 +32,13 @@ func (h Handler) Init() {
 	// Endpoint settings
 	h.GET("/bender-beer/v1/health-check", HealthCheck)
 
-	beer := h.Group("/bender-beer/v1/beers/")
+	beer := h.Group("/bender-beer/v1/beer/")
 
-	beer.GET("", h.GetAllBeers)
 	beer.POST("", h.CreateBeer)
 	beer.GET(":beerId", h.GetBeerById)
-	beer.GET(":beerId/boxprice", h.GetBeerBox)
+	beer.GET("boxprice/:beerId", h.GetBeerBox)
+
+	beers := h.Group("/bender-beer/v1/beers/")
+
+	beers.GET("", h.GetAllBeers)
 }

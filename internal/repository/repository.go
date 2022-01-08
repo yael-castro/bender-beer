@@ -19,10 +19,21 @@ const (
 )
 
 // beerData preload beer data used in storage of type Memory
-var beerData = map[int]model.Beer{}
+var beerData = map[int]model.Beer{
+	0: {
+		Id:       0,
+		Currency: "USD",
+		Price:    2,
+	},
+	1: {
+		Id:       1,
+		Currency: "MXN",
+		Price:    17.50,
+	},
+}
 
 const (
-	insertBeer = `INSERT INTO "beers"(name, brewery, country, currency, price) VALUES ($1, $2, $3, $4, $5, $6) RETURNING beer_id`
+	insertBeer = `INSERT INTO "beers"(name, brewery, country, currency, price) VALUES ($1, $2, $3, $4, $5) RETURNING beer_id`
 
 	selectBeers = `SELECT beer_id, name, brewery, country, currency, price FROM "beers"`
 
