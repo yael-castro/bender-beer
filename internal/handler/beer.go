@@ -105,7 +105,7 @@ func (b BeerGroup) GetBeerBox(c echo.Context) error {
 	log.Println(id)
 
 	currency := c.QueryParam("currency")
-	if id == "" {
+	if currency == "" {
 		currency = "USD"
 	}
 

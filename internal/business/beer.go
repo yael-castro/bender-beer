@@ -4,6 +4,7 @@ package business
 import (
 	"github.com/yael-castro/bender-beer/internal/model"
 	"github.com/yael-castro/bender-beer/internal/repository"
+	"log"
 )
 
 type BeerStorage interface {
@@ -43,6 +44,7 @@ func (p BeerProvider) GetBeerBox(beerId, beerNumber int, currency string) (box m
 		return
 	}
 
+	log.Println(beer.Currency, currency)
 	if beer.Currency == currency {
 		box.PriceTotal = beer.Price * float64(beerNumber)
 		return
