@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+
+  beer_storage:
+    image: yy00/bender-beer:v0.1.0 # my image
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=tequila
+      - POSTGRES_DB=beer
+
+  beer_cache:
+    image: redis:6.0-alpine3.15
+    ports:
+      - "6379:6379"
+
+  app:
+    container_name: bender_beer
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "80:8080"
+    image: bender_beer_image
+    links:
+      - beer_storage
+      - beer_cache
+    depends_on:
+      - beer_storage
+      - beer_cache
