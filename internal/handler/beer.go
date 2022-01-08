@@ -61,7 +61,7 @@ func (b BeerGroup) GetBeerById(c echo.Context) error {
 
 	beerId, err := strconv.Atoi(id)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, model.Error{Info: "missing a numeric value for the path param"})
+		return c.JSON(http.StatusBadRequest, model.Error{Info: "missing a numeric value for the path param: " + id})
 	}
 
 	beer, err := b.BeerStorage.GetBeerById(beerId)
@@ -106,7 +106,7 @@ func (b BeerGroup) GetBeerBox(c echo.Context) error {
 		currency = "USD"
 	}
 
-	quantity, err := strconv.Atoi(c.QueryParam("quantity"))
+	quantity, err := strconv.Atoi(c.QueryParam("boxprice"))
 	if err != nil {
 		quantity = 6
 	}
