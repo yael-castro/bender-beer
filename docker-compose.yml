@@ -3,7 +3,8 @@ version: '3.7'
 services:
 
   beer_storage:
-    image: yy00/bender-beer:v0.1.0 # my image
+    # my image
+    image: yy00/bender-beer:1.0.0-alphine13
     restart: unless-stopped
     ports:
       - "5432:5432"
@@ -25,6 +26,8 @@ services:
     ports:
       - "80:8080"
     image: bender_beer_image
+    env_file:
+      - "env.env"
     links:
       - beer_storage
       - beer_cache

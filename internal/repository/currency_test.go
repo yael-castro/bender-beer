@@ -3,17 +3,10 @@ package repository
 import (
 	"errors"
 	"log"
-	"os"
 	"reflect"
 	"strconv"
 	"testing"
 )
-
-var _ = func() interface{} {
-	os.Setenv("CURRENCY_API_URL", "http://api.currencylayer.com/live?access_key=ec3e1d8764c1708b990796e9a1d2e3e8")
-
-	return nil
-}()
 
 var (
 	ttCurrency = []struct {

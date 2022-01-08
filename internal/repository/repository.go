@@ -22,12 +22,9 @@ const (
 var beerData = map[int]model.Beer{}
 
 const (
-	insertBeer = `"
-				INSERT INTO beers(name, brewery, country, currency, price)
-					VALUES ($1, $2, $3, $4, $5, $6) RETURN beer_id"
-	`
+	insertBeer = `INSERT INTO "beers"(name, brewery, country, currency, price) VALUES ($1, $2, $3, $4, $5, $6) RETURNING beer_id`
 
-	selectBeers = `SELECT beer_id, name, brewery, country, currency, price FROM beers`
+	selectBeers = `SELECT beer_id, name, brewery, country, currency, price FROM "beers"`
 
-	selectBeer = `SELECT name, brewery, country, currency, price FROM beers WHERE beer_id = $1`
+	selectBeer = `SELECT name, brewery, country, currency, price FROM "beers" WHERE beer_id = $1`
 )
