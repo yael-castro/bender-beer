@@ -1,5 +1,7 @@
 package model
 
+import "github.com/lib/pq"
+
 type (
 	// Map used to make a unique structure as unique http responses
 	Map map[string]interface{}
@@ -9,4 +11,7 @@ type (
 		// Info description about error
 		Info string `json:"info,omitempty"`
 	}
+
+	// SQLError alias for pq.Error
+	SQLError = pq.Error
 )

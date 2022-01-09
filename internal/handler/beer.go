@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/yael-castro/bender-beer/internal/business"
@@ -66,8 +68,8 @@ func (b BeerGroup) GetBeerById(c echo.Context) error {
 	}
 
 	beer, err := b.BeerStorage.GetBeerById(beerId)
-	if err, ok := err.(model.NotFound); ok {
-		return c.JSON(http.StatusBadRequest, model.Error{Info: string(err)})
+	if _, ok := err.(model.NotFound); ok || errors.Is(err, sql.ErrNoRows) {
+		return c.JSON(http.StatusNotFound, model.Error{Info: err.Error()})
 	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, model.Error{Info: err.Error()})
@@ -115,8 +117,8 @@ func (b BeerGroup) GetBeerBox(c echo.Context) error {
 	}
 
 	beerBox, err := b.BeerStorage.GetBeerBox(beerId, quantity, currency)
-	if err, ok := err.(model.NotFound); ok {
-		return c.JSON(http.StatusBadRequest, model.Error{Info: string(err)})
+	if _, ok := err.(model.NotFound); ok || errors.Is(err, sql.ErrNoRows) {
+		return c.JSON(http.StatusNotFound, model.Error{Info: err.Error()})
 	}
 
 	if err != nil {
