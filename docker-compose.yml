@@ -12,7 +12,7 @@ services:
       - POSTGRES_PASSWORD=tequila
       - POSTGRES_DB=beer
     volumes:
-      - ./migrations/data_base_init/docker-entrypoint-initdb.d/data_base_init.sql
+      - ./migrations/data_base_init.sql:/docker-entrypoint-initdb.d/data_base_init.sql
 
   beer_cache:
     image: redis:6.0-alpine3.15
